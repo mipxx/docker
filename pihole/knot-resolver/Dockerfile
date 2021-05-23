@@ -5,7 +5,7 @@ RUN apk add --no-cache alpine-conf
 RUN setup-timezone -z Europe/Berlin
 RUN setup-hostname -n knot-resolver
 
-# unbound
+# knot-resolver
 RUN apk add --no-cache knot-resolver drill
 RUN mkdir /var/lib/knot-resolver
 RUN chown kresd:kresd /var/lib/knot-resolver
