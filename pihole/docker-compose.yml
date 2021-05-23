@@ -1,0 +1,73 @@
+version: "2.1"
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+    environment:
+      TZ: 'Europe/Berlin'
+      WEBPASSWORD: 'pleasechangeme'
+      PIHOLE_DNS_: '172.16.0.3;172.16.0.4;fd00:172:16:0::3;fd00:172:16:0::4'
+      DNSSEC: 1
+      DNS_BOGUS_PRIV: 1
+      DNS_FQDN_REQUIRED: 0
+      REV_SERVER: 1
+      REV_SERVER_DOMAIN: fritz.box
+      REV_SERVER_TARGET: 192.168.178.1
+      REV_SERVER_CIDR: 192.168.178.0/24
+      IPv6: 1
+      DNSMASQ_USER: pihole
+      TEMPERATUREUNIT: c
+      QUERY_LOGGING: 1 
+    cap_add: 
+      # https://github.com/pi-hole/docker-pi-hole/issues/734
+      - SYS_PTRACE
+    volumes:
+      - pihole:/etc/pihole
+      - dnsmasq:/etc/dnsmasq.d
+    restart: unless-stopped
+    networks:
+      bridge:
+        ipv4_address: 172.16.0.2
+        ipv6_address: fd00:172:16:0::2
+
+  unbound:
+    container_name: unbound
+    build: ./unbound
+    restart: unless-stopped
+    networks:
+      bridge:
+        ipv4_address: 172.16.0.3
+        ipv6_address: fd00:172:16:0::3
+
+  knot-resolver:
+    container_name: knot-resolver
+    build: ./knot-resolver
+    restart: unless-stopped
+    networks: 
+      bridge:
+        ipv4_address: 172.16.0.4
+        ipv6_address: fd00:172:16:0::4
+
+
+volumes:
+  pihole:
+  dnsmasq:
+
+
+networks: 
+  bridge:
+    enable_ipv6: true
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.16.0.0/24
+        gateway: 172.16.0.1
+      - subnet: fd00:172:16:0::/64
+        gateway: fd00:172:16:0::1
