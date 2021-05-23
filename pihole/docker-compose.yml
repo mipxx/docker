@@ -11,9 +11,9 @@ services:
       - "67:67/udp"
       - "80:80/tcp"
     environment:
-      TZ: 'Europe/Berlin'
-      WEBPASSWORD: 'pleasechangeme'
-      PIHOLE_DNS_: '172.16.0.3;172.16.0.4;fd00:172:16:0::3;fd00:172:16:0::4'
+      TZ: "Europe/Berlin"
+      WEBPASSWORD: "pleasechangeme"
+      PIHOLE_DNS_: "172.16.0.3;172.16.0.4;fd00:172:16:0::3;fd00:172:16:0::4"
       DNSSEC: 1
       DNS_BOGUS_PRIV: 1
       DNS_FQDN_REQUIRED: 0
