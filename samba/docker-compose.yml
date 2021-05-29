@@ -1,0 +1,19 @@
+version: "2.1"
+services:  
+  samba:
+    container_name: samba
+    build: .
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - private:/private
+      - public:/public
+      - mixed:/mixed
+      - time_machine:/time_machine
+
+
+volumes:
+  mixed:
+  private:
+  public:
+  time_machine:
