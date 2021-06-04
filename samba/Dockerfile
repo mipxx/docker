@@ -34,8 +34,8 @@ COPY config/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 COPY config/smb.service /etc/avahi/services/smb.service
 
 # entrypoint
-COPY config/entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+COPY config/entry.sh /usr/bin/entry.sh
+RUN chmod +x /usr/bin/entry.sh
 
 EXPOSE 137/udp
 EXPOSE 138/udp
