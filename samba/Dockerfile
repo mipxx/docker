@@ -15,10 +15,11 @@ COPY config/smb.conf /etc/samba/smb.conf
 RUN adduser -gecos 'user1' -shell '/bin/bash' --disabled-password user1
 RUN echo user1:user1 | chpasswd
 RUN (echo user1; echo user1) | smbpasswd -s -a user1
-RUN mkdir /mixed && chown user1:user1 /mixed -R
-RUN mkdir /private && chown user1:user1 /private -R
-RUN mkdir /public && chown user1:user1 /public -R
-RUN mkdir /time_machine && chown user1:user1 /time_machine -R
+RUN mkdir /mixed && chown user1:user1 /mixed -R && chmod 755 /mixed
+RUN mkdir /private && chown user1:user1 /private -R && chmod 770 /private
+RUN mkdir /public && chown nobody:nogroup /public -R && chmod 777 /public
+RUN mkdir -p /time_machine/user1 && chown user1:user1 /time_machine/user1 -R && chmod 770 /time_machine/user1
+RUN mkdir -p /time_machine/public && chown nobody:nogroup /time_machine/public -R && chmod 777 /time_machine/public
 
 # wsdd
 RUN apt-get install wget --yes
