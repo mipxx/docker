@@ -12,7 +12,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get install samba smbclient --yes
 RUN apt-get clean
 COPY config/smb.conf /etc/samba/smb.conf
-RUN adduser -gecos 'user1' -shell '/bin/bash' --disabled-password user1
+RUN adduser -gecos 'user1' -gid 1001 -uid 1001 -shell '/bin/bash' --disabled-password user1
 RUN echo user1:user1 | chpasswd
 RUN (echo user1; echo user1) | smbpasswd -s -a user1
 RUN mkdir /mixed && chown user1:user1 /mixed -R && chmod 755 /mixed
